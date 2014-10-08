@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin xmlns='http://www.urbancode.com/PluginXMLSchema_v1'>
+    <header>
+        <identifier id='com.urbancode.air.plugin.SendEmail' version='1' name='Send Email'/>
+        <description>The Send Email plugin allows you to send emails (via SMTP) as part of a component process.
+        </description>
+        <tag>Automation</tag>
+    </header>
+
+    <step-type name='Send Email'>
+        <description>Send Email.</description>
+        <properties>
+            <property name='mailServer' required='true'>
+                <property-ui type='textBox' label='Mail Server' default-value="${p:system/smtp.server}"
+                             description='The mail server hostname.'/>
+            </property>
+            <property name='mailPort' required='true'>
+                <property-ui type='textBox' label='Port' default-value="${p:system/smtp.port}"
+                             description='The mail server port.'/>
+            </property>
+            <property name='mailFrom' required='false'>
+                <property-ui type='textBox' label='From User'
+                             description='The user the mail will appear to be sent from.'/>
+            </property>
+            <property name="mailAuthenticate" required="false">
+                <property-ui type="checkBox" label="Use Authentication"
+                             description="Check if mail server requires authentication."/>
+            </property>
+            <property name='mailUsername' required='false'>
+                <property-ui type='textBox' label='Username' default-value="${p:system/smtp.username}"
+                             description='Username for authenticating with mail server.'/>
+            </property>
+            <property name='mailPassword' required='false'>
+                <property-ui type='secureBox' label='Password' default-value="${p:system/smtp.password}"
+                             description='Password for authenticating with mail server.'/>
+            </property>
+            <property name="mailUseTLS" required="false">
+                <property-ui type="checkBox" label="Use TLS/SSL" description="Check if mail server requires TLS/SSL."/>
+            </property>
+            <property name="sendAsHTML" required="false">
+                <property-ui type="checkBox" label="Send as HTML"
+                             description="Check if you want to send an HTML formatted mail message."/>
+            </property>
+            <property name="toList" required="true">
+                <property-ui type="textAreaBox"
+                             label="To List"
+                             description="Comma separated list of email addresses to send an email to."/>
+            </property>
+            <property name="subject">
+                <property-ui type="textAreaBox"
+                             label="Subject"
+                             description="The email subject."/>
+            </property>
+            <property name="body" required="true">
+                <property-ui type="textAreaBox"
+                             label="Body"
+                             description="The email message content body."/>
+            </property>
+        </properties>
+        <post-processing><![CDATA[
+ if (properties.get("exitCode") != 0) {
+ properties.put(new java.lang.String("Status"), new java.lang.String("Failure"));
+ }
+ else { 
+ properties.put("Status", "Success"); 
+ }
+ ]]></post-processing>
+        <command program='${GROOVY_HOME}/bin/groovy'>
+            <arg value='-cp'/>
+            <arg path='classes:lib/*'/>
+            <arg file='sendEmail.groovy'/>
+            <arg file='${PLUGIN_INPUT_PROPS}'/>
+            <arg file='${PLUGIN_OUTPUT_PROPS}'/>
+        </command>
+    </step-type>
+</plugin>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pluginInfo>
+  <author>
+    <name>Serena</name>
+    <email>klee@serena.com</email>
+    <website>http://www.serena.com</website>
+  </author>
+  <licenses>
+    <license>Apache License</license>
+  </licenses>
+  <integrationType>Automation</integrationType>
+  <categories>
+    <category>Email</category>
+  </categories>
+  <versions>
+    <version name="1">
+	  <releaseNote>
+	   The Send Email plugin allows you to send emails (via SMTP) as part of a component process.
+	  </releaseNote>
+    </version>
+  </versions>
+</pluginInfo>
